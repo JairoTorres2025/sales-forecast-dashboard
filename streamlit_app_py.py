@@ -98,25 +98,16 @@ st.altair_chart(tiles, use_container_width=False)
 
 
 # ---- AI Help Assistant ----
-openai.api_key = st.secrets["openai"]["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"]
+openai.api_key = st.secrets["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"]
 
-with st.expander("💬 Ask AI about the dashboard"):
-    user_query = st.text_input("Type your question:", "How to detect low-performing regions?")
-    if user_query:
-        with st.spinner("Thinking..."):
-            try:
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful data analyst assistant for a sales dashboard."},
-                        {"role": "user", "content": user_query}
-                    ],
-                    temperature=0.7,
-                    max_tokens=300
-                )
-                st.success(response['choices'][0]['message']['content'].strip())
-            except Exception as e:
-                st.error(f"AI Assistant error: {e}")
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": user_query}
+    ]
+)
+
+st.write(response['choices'][0]['message']['content'])
 
 # ---- Visualization Section ----
 st.subheader("📈 Revenue Trend")
