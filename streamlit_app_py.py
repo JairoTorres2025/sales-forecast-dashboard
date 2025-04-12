@@ -98,8 +98,7 @@ st.altair_chart(tiles, use_container_width=False)
 
 
 # ---- AI Help Assistant ----
-st.write("Secrets:", st.secrets)
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+st.secrets["openai"]["OPENAI_API_KEY"]
 user_query = st.text_input("Ask your AI Assistant:")
 
 if user_query:
