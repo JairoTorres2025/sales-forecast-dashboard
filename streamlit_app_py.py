@@ -98,18 +98,25 @@ st.altair_chart(tiles, use_container_width=False)
 
 
 # ---- AI Help Assistant ----
-st.subheader("🧠 Smart Assistant (AI Help Box)")
+openai.api_key = st.secrets["openai"]["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"]
+
 with st.expander("💬 Ask AI about the dashboard"):
     user_query = st.text_input("Type your question:", "How to detect low-performing regions?")
     if user_query:
-        if "drop" in user_query.lower():
-            st.info("Check '📉 Regional Change Comparison' to see region-specific drops in revenue or sales.")
-        elif "forecast" in user_query.lower():
-            st.info("The forecast is generated using Prophet. Refer to '🔮 Forecast' for predicted revenue.")
-        elif "risk" in user_query.lower():
-            st.info("Risk alerts help detect anomalies. View the 🔥 Risk Heatmap and ⚠️ Risk Warnings for insights.")
-        else:
-            st.success("💡 Tip: Explore different filters and check the AI-generated insights at the bottom.")
+        with st.spinner("Thinking..."):
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful data analyst assistant for a sales dashboard."},
+                        {"role": "user", "content": user_query}
+                    ],
+                    temperature=0.7,
+                    max_tokens=300
+                )
+                st.success(response['choices'][0]['message']['content'].strip())
+            except Exception as e:
+                st.error(f"AI Assistant error: {e}")
 
 # ---- Visualization Section ----
 st.subheader("📈 Revenue Trend")
