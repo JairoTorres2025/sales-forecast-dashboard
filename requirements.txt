@@ -8,3 +8,4 @@ prophet
 fpdf
 pillow
 plotly
+openai
