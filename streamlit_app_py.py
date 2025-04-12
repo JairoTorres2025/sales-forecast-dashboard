@@ -2,7 +2,7 @@
 # streamlit_app_py.py
 
 # streamlit_app.py
-import openai
+from openai import OpenAI
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -98,17 +98,24 @@ st.altair_chart(tiles, use_container_width=False)
 
 
 # ---- AI Help Assistant ----
-st.secrets["openai"]["OPENAI_API_KEY"]
-user_query = st.text_input("Ask your AI Assistant:")
+# Set up the OpenAI client with your API key
+client = OpenAI(api_key=st.secrets["openai"]["OPENAI_API_KEY"])
 
-if user_query:
-    response = openai.ChatCompletion.create(
+# Get user input from Streamlit text box
+user_input = st.text_input("Ask your AI Assistant:")
+
+if user_input:
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": user_query}
+            {"role": "system", "content": "You are a helpful AI assistant."},
+            {"role": "user", "content": user_input}
         ]
     )
-    st.write(response['choices'][0]['message']['content'])
+
+    # Extract and display the assistant's reply
+    ai_reply = response.choices[0].message.content
+    st.success(ai_reply)
 
 
 # ---- Visualization Section ----
