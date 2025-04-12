@@ -18,7 +18,7 @@ from io import BytesIO
 from datetime import datetime, timedelta
 import altair as alt
 
-!pip install fpdf
+
 
 from fpdf import FPDF
 
