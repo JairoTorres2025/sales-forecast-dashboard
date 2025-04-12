@@ -1,6 +1,8 @@
 
 # streamlit_app_py.py
 
+# streamlit_app.py
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -12,7 +14,7 @@ import altair as alt
 from prophet import Prophet
 from fpdf import FPDF
 from PIL import Image
-
+import plotly.express as px
 # Set page config
 st.set_page_config(page_title="📊 AI-Powered Sales Forecast Dashboard", layout="wide")
 
@@ -78,12 +80,19 @@ total_units = filtered_df['Units Sold'].sum()
 avg_daily_sales = filtered_df.groupby('Date')['Units Sold'].sum().mean()
 risk_alerts = filtered_df['Risk Flag'].sum()
 
-st.subheader("📊 Key Performance Indicators")
-kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-kpi1.metric("💰 Total Revenue", f"${total_revenue:,.0f}")
-kpi2.metric("📦 Total Units Sold", f"{total_units:,}")
-kpi3.metric("📈 Avg Daily Sales", f"{avg_daily_sales:.2f}")
-kpi4.metric("🚨 Risk Alerts", f"{risk_alerts}")
+st.subheader("📊 Sales Overview Tiles")
+tiles = alt.Chart(sales_over_time).mark_area(
+    line={'color': 'teal'},
+    color=alt.Gradient(
+        gradient='linear',
+        stops=[alt.GradientStop(color='lightblue', offset=0), alt.GradientStop(color='white', offset=1)],
+        x1=1, x2=1, y1=1, y2=0)
+).encode(
+    x='Date:T',
+    y='Revenue:Q'
+).properties(height=100, width=300)
+st.altair_chart(tiles, use_container_width=False)
+
 
 # ---- AI Help Assistant ----
 st.subheader("🧠 Smart Assistant (AI Help Box)")
@@ -194,3 +203,14 @@ if risk_alerts == 0:
 else:
     emoji_sum += "⚠️ Stay Alert: Risk Detected\n"
 st.markdown(f"**Summary**: \n{emoji_sum}")
+st.progress(min(total_revenue / 150000, 1.0), text="Revenue Target")
+st.progress(min(total_units / 10000, 1.0), text="Units Sold Target")
+
+metrics_df = pd.DataFrame({
+    'Metric': ['Revenue', 'Units Sold', 'Avg Daily Sales', 'Risk Events'],
+    'Value': [total_revenue, total_units, avg_daily_sales, risk_alerts]
+})
+
+fig = px.line_polar(metrics_df, r='Value', theta='Metric', line_close=True,
+                    title="📊 Performance Radar", template="plotly_dark")
+st.plotly_chart(fig, use_container_width=True)
