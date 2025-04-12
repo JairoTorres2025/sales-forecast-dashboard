@@ -80,6 +80,9 @@ total_units = filtered_df['Units Sold'].sum()
 avg_daily_sales = filtered_df.groupby('Date')['Units Sold'].sum().mean()
 risk_alerts = filtered_df['Risk Flag'].sum()
 
+# ---- Sales Over Time Summary ----
+sales_over_time = filtered_df.groupby('Date')[['Units Sold', 'Revenue']].sum().reset_index()
+
 st.subheader("📊 Sales Overview Tiles")
 tiles = alt.Chart(sales_over_time).mark_area(
     line={'color': 'teal'},
