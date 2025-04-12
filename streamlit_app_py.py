@@ -99,15 +99,17 @@ st.altair_chart(tiles, use_container_width=False)
 
 # ---- AI Help Assistant ----
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+user_query = st.text_input("Ask your AI Assistant:")
 
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "user", "content": user_query}
-    ]
-)
+if user_query:
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": user_query}
+        ]
+    )
+    st.write(response['choices'][0]['message']['content'])
 
-st.write(response['choices'][0]['message']['content'])
 
 # ---- Visualization Section ----
 st.subheader("📈 Revenue Trend")
