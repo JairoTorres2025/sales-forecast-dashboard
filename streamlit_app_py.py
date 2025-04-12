@@ -2,7 +2,7 @@
 # streamlit_app_py.py
 
 # streamlit_app.py
-
+import openai
 import streamlit as st
 import pandas as pd
 import numpy as np
