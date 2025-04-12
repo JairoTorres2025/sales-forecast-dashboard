@@ -196,3 +196,28 @@ if not delta_df.empty:
         color=alt.condition(alt.datum.change > 0, alt.value("green"), alt.value("red"))
     ).properties(title="30-Day Revenue Change by Region")
     st.altair_chart(bar, use_container_width=True)
+
+st.title("📊 Sales Forecast Dashboard with File Upload")
+
+# File uploader
+uploaded_file = st.file_uploader("Upload your CSV or Excel file", type=["csv", "xlsx"])
+
+# Load data
+if uploaded_file is not None:
+    try:
+        if uploaded_file.name.endswith('.csv'):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+        
+        st.success("File uploaded successfully!")
+        st.write("📄 **Preview of Uploaded Data**")
+        st.dataframe(df.head())
+
+        # Continue with your dashboard logic here using `df`
+        # For example: plotting, forecasting, etc.
+
+    except Exception as e:
+        st.error(f"Something went wrong: {e}")
+else:
+    st.warning("Please upload a file to continue.")
