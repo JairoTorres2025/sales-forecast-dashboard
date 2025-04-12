@@ -98,7 +98,7 @@ st.altair_chart(tiles, use_container_width=False)
 
 
 # ---- AI Help Assistant ----
-openai.api_key = st.secrets["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"]
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
