@@ -16,7 +16,7 @@ from fpdf import FPDF
 from PIL import Image
 import plotly.express as px
 # Set page config
-st.set_page_config(page_title="📊 AI-Powered Sales Forecast Dashboard", layout="wide")
+st.set_page_config(page_title="📊VISHAL AI-Powered Sales Forecast Dashboard", layout="wide")
 
 # --- Custom Styling ---
 st.markdown("""
@@ -29,7 +29,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🤖 AI-Powered Sales Forecast & Risk Dashboard")
+st.title("🤖 VISHAL AI-Powered Sales Forecast & Risk Dashboard")
 
 # ---- File Upload Section ----
 st.sidebar.header("📁 Upload Sales Data")
